@@ -1,0 +1,38 @@
+crypto_core/keccak1600/libsodium_la-keccak1600.lo: \
+ crypto_core/keccak1600/keccak1600.c \
+ include/sodium/crypto_core_keccak1600.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h \
+ include/sodium/export.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/features.h \
+ D:/arm_compiler/arm-none-eabi/include/_newlib_version.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h \
+ D:/arm_compiler/arm-none-eabi/include/limits.h \
+ D:/arm_compiler/arm-none-eabi/include/newlib.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h \
+ crypto_core/keccak1600/ref/keccak1600_ref.h \
+ include/sodium/private/quirks.h
+include/sodium/crypto_core_keccak1600.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h:
+include/sodium/export.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/features.h:
+D:/arm_compiler/arm-none-eabi/include/_newlib_version.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h:
+D:/arm_compiler/arm-none-eabi/include/limits.h:
+D:/arm_compiler/arm-none-eabi/include/newlib.h:
+D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h:
+D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h:
+crypto_core/keccak1600/ref/keccak1600_ref.h:
+include/sodium/private/quirks.h:

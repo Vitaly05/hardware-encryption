@@ -1,0 +1,69 @@
+crypto_stream/libsodium_la-crypto_stream.lo: \
+ crypto_stream/crypto_stream.c include/sodium/crypto_stream.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h \
+ include/sodium/crypto_stream_xsalsa20.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/features.h \
+ D:/arm_compiler/arm-none-eabi/include/_newlib_version.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h \
+ include/sodium/export.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h \
+ D:/arm_compiler/arm-none-eabi/include/limits.h \
+ D:/arm_compiler/arm-none-eabi/include/newlib.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h \
+ include/sodium/randombytes.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/types.h \
+ D:/arm_compiler/arm-none-eabi/include/_ansi.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/config.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/ieeefp.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_types.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/endian.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_endian.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/select.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_sigset.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_timeval.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/timespec.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_timespec.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_pthreadtypes.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/sched.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/types.h
+include/sodium/crypto_stream.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h:
+include/sodium/crypto_stream_xsalsa20.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/features.h:
+D:/arm_compiler/arm-none-eabi/include/_newlib_version.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h:
+include/sodium/export.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h:
+D:/arm_compiler/arm-none-eabi/include/limits.h:
+D:/arm_compiler/arm-none-eabi/include/newlib.h:
+D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h:
+D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h:
+include/sodium/randombytes.h:
+D:/arm_compiler/arm-none-eabi/include/sys/types.h:
+D:/arm_compiler/arm-none-eabi/include/_ansi.h:
+D:/arm_compiler/arm-none-eabi/include/sys/config.h:
+D:/arm_compiler/arm-none-eabi/include/machine/ieeefp.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_types.h:
+D:/arm_compiler/arm-none-eabi/include/machine/endian.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_endian.h:
+D:/arm_compiler/arm-none-eabi/include/sys/select.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_sigset.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_timeval.h:
+D:/arm_compiler/arm-none-eabi/include/sys/timespec.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_timespec.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_pthreadtypes.h:
+D:/arm_compiler/arm-none-eabi/include/sys/sched.h:
+D:/arm_compiler/arm-none-eabi/include/machine/types.h:

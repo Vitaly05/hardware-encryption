@@ -1,0 +1,68 @@
+crypto_stream/chacha20/dolbeau/libavx2_la-chacha20_dolbeau-avx2.lo: \
+ crypto_stream/chacha20/dolbeau/chacha20_dolbeau-avx2.c \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/features.h \
+ D:/arm_compiler/arm-none-eabi/include/_newlib_version.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/stdlib.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/ieeefp.h \
+ D:/arm_compiler/arm-none-eabi/include/_ansi.h \
+ D:/arm_compiler/arm-none-eabi/include/newlib.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/config.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/reent.h \
+ D:/arm_compiler/arm-none-eabi/include/_ansi.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_types.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/lock.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/stdlib.h \
+ D:/arm_compiler/arm-none-eabi/include/alloca.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_locale.h \
+ D:/arm_compiler/arm-none-eabi/include/string.h \
+ D:/arm_compiler/arm-none-eabi/include/strings.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/string.h include/sodium/core.h \
+ include/sodium/export.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h \
+ D:/arm_compiler/arm-none-eabi/include/limits.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h \
+ include/sodium/crypto_stream_chacha20.h include/sodium/private/common.h \
+ include/sodium/utils.h
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/features.h:
+D:/arm_compiler/arm-none-eabi/include/_newlib_version.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h:
+D:/arm_compiler/arm-none-eabi/include/stdlib.h:
+D:/arm_compiler/arm-none-eabi/include/machine/ieeefp.h:
+D:/arm_compiler/arm-none-eabi/include/_ansi.h:
+D:/arm_compiler/arm-none-eabi/include/newlib.h:
+D:/arm_compiler/arm-none-eabi/include/sys/config.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h:
+D:/arm_compiler/arm-none-eabi/include/sys/reent.h:
+D:/arm_compiler/arm-none-eabi/include/_ansi.h:
+D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_types.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/lock.h:
+D:/arm_compiler/arm-none-eabi/include/machine/stdlib.h:
+D:/arm_compiler/arm-none-eabi/include/alloca.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_locale.h:
+D:/arm_compiler/arm-none-eabi/include/string.h:
+D:/arm_compiler/arm-none-eabi/include/strings.h:
+D:/arm_compiler/arm-none-eabi/include/sys/string.h:
+include/sodium/core.h:
+include/sodium/export.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h:
+D:/arm_compiler/arm-none-eabi/include/limits.h:
+D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h:
+include/sodium/crypto_stream_chacha20.h:
+include/sodium/private/common.h:
+include/sodium/utils.h:

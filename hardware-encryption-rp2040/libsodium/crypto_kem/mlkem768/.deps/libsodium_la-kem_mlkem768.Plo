@@ -1,0 +1,37 @@
+crypto_kem/mlkem768/libsodium_la-kem_mlkem768.lo: \
+ crypto_kem/mlkem768/kem_mlkem768.c include/sodium/crypto_kem_mlkem768.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h \
+ include/sodium/export.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/stdint.h \
+ D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/features.h \
+ D:/arm_compiler/arm-none-eabi/include/_newlib_version.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h \
+ D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h \
+ D:/arm_compiler/arm-none-eabi/include/limits.h \
+ D:/arm_compiler/arm-none-eabi/include/newlib.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h \
+ D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h \
+ crypto_kem/mlkem768/ref/kem_mlkem768_ref.h \
+ include/sodium/private/quirks.h
+include/sodium/crypto_kem_mlkem768.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stddef.h:
+include/sodium/export.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/stdint.h:
+D:/arm_compiler/arm-none-eabi/include/machine/_default_types.h:
+D:/arm_compiler/arm-none-eabi/include/sys/features.h:
+D:/arm_compiler/arm-none-eabi/include/_newlib_version.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_intsup.h:
+D:/arm_compiler/arm-none-eabi/include/sys/_stdint.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/limits.h:
+D:/arm_compiler/lib/gcc/arm-none-eabi/15.3.1/include/syslimits.h:
+D:/arm_compiler/arm-none-eabi/include/limits.h:
+D:/arm_compiler/arm-none-eabi/include/newlib.h:
+D:/arm_compiler/arm-none-eabi/include/sys/cdefs.h:
+D:/arm_compiler/arm-none-eabi/include/sys/syslimits.h:
+crypto_kem/mlkem768/ref/kem_mlkem768_ref.h:
+include/sodium/private/quirks.h:

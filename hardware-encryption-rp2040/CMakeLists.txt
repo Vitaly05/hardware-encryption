@@ -35,6 +35,7 @@ pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
+# start libsodium -------
 set(SODIUM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libsodium")
 
 file(GLOB_RECURSE ALL_SODIUM_FILES 
@@ -69,9 +70,12 @@ target_include_directories(sodium PRIVATE
 	"${SODIUM_DIR}/include/sodium"
 )
 
+# end libsodium -------
+
 add_executable(${PROJECT_NAME}
 	hardware_encryption.c
 	usb_descriptors.c
+	sodium_config.c
 )
 
 pico_set_program_name(${PROJECT_NAME} "hardware_encryption")

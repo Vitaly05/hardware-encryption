@@ -3,15 +3,11 @@
 #include <Windows.h>
 #include <vector>
 
+#include "shared_config.h"
 #include "hid.h"
 
-typedef enum {
-	FLAG_ENCRYPTED_KEY = 1,
-	FLAG_PROGRAM_PUBLIC_KEY = 2,
-} POCKET_FLAG;
-
 static struct Pocket {
-	BYTE data[HID_DATA_BYTE_SIZE];
+	BYTE data[HID_DATA_BYTESIZE];
 
 	Pocket() : data{} {}
 };

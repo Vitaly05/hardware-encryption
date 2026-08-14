@@ -101,8 +101,8 @@ bool g_is_encrypted_key_started = false;
 int g_sended_key_iteration = 0;
 
 void HID::Write(const BYTE* data) {
-    BYTE buff[HID_DATA_BYTE_SIZE + 1] = { 0 };
-    memcpy(&buff[1], data, HID_DATA_BYTE_SIZE);
+    BYTE buff[HID_DATA_BYTESIZE + 1] = { 0 };
+    memcpy(&buff[1], data, HID_DATA_BYTESIZE);
 
     DWORD bytesWritten = 0;
 
@@ -117,8 +117,8 @@ void HID::Write(const BYTE* data) {
     std::cout << "Sended to device" << std::endl;
 }
 
-std::array<BYTE, HID_DATA_BYTE_SIZE> HID::Read() {
-    BYTE buff[HID_DATA_BYTE_SIZE + 1] = { 0 };
+std::array<BYTE, HID_DATA_BYTESIZE> HID::Read() {
+    BYTE buff[HID_DATA_BYTESIZE + 1] = { 0 };
     DWORD bytesRead = 0;
 
     std::cout << "Start reading..." << std::endl;
@@ -136,8 +136,8 @@ std::array<BYTE, HID_DATA_BYTE_SIZE> HID::Read() {
 
     GetOverlappedResult(handle, &overlappedRead, &bytesRead, TRUE);
 
-    std::array<BYTE, HID_DATA_BYTE_SIZE> data;
-    memcpy(data.data(), &buff[1], HID_DATA_BYTE_SIZE);
+    std::array<BYTE, HID_DATA_BYTESIZE> data;
+    memcpy(data.data(), &buff[1], HID_DATA_BYTESIZE);
 
     return data;
 }

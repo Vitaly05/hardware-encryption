@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 
+#include "shared_config.h"
 #include "hid.h"
 #include "crypto_helper.h"
 #include "encrypted_file.h"
@@ -18,23 +19,12 @@ const WORD PID = 0x464A;
 
 const unsigned char DEVICE_PUBLIC_KEY[] = { 0x27, 0x56, 0x30, 0x1B, 0xF0, 0x3B, 0xFA, 0x28, 0xEB, 0xD1, 0x35, 0xFF, 0x48, 0xF2, 0xC5, 0x54, 0x6C, 0x98, 0x8C, 0x4C, 0x1D, 0x61, 0xA2, 0xB4, 0x07, 0x99, 0x4A, 0x40, 0xDB, 0x97, 0x31, 0x0B };
 
-std::string getString() {
-    return "Hello!";
-
-    std::cout << "Enter text: ";
-
-    std::string a;
-    std::cin >> a;
-
-    return a;
-}
-
 int main() {
     if (sodium_init() < 0) {
         return 1;
     }
 
-    std::string message = "Test from file";
+    std::string message = "Test from file ";
     EncryptedData ed = encrypt_data(message, DEVICE_PUBLIC_KEY);
 
     if (save_file("test", ed) != 0) {
@@ -57,14 +47,14 @@ int main() {
         HID hid(VID, PID);
         CryptoHidController chc(hid);
 
-        chc.send_keys(edf.encrypted_key, EF_KEY_BYTE_SIZE, pk, crypto_box_PUBLICKEYBYTES);
+        chc.send_keys(edf.encrypted_key, SEALED_KEY_BYTESIZE, pk, crypto_box_PUBLICKEYBYTES);
 
-        unsigned char readed_key[CH_KEY_BYTE_SIZE];
+        unsigned char readed_key[SEALED_KEY_BYTESIZE];
         chc.read_key(readed_key);
 
-        unsigned char decrypted_key[crypto_aead_aegis256_KEYBYTES];
+        unsigned char decrypted_key[DECRYPTED_KEY_BYTESIZE];
 
-        if (crypto_box_seal_open(decrypted_key, readed_key, CH_KEY_BYTE_SIZE, pk, sk) != 0) {
+        if (crypto_box_seal_open(decrypted_key, readed_key, SEALED_KEY_BYTESIZE, pk, sk) != 0) {
             std::cerr << "Message corrupted or not intended for this recipient." << std::endl;
             return 1;
         }

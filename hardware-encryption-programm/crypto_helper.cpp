@@ -13,8 +13,8 @@ EncryptedData encrypt_data(const std::string& data, const unsigned char* pk) {
 
     crypto_aead_aegis256_encrypt(d.encrypted.data(), &d.encrypted_len,
         reinterpret_cast<const unsigned char*>(data.data()), data.size(),
-        nullptr, 0,
-        nullptr, d.nonce, key
+        NULL, 0,
+        NULL, d.nonce, key
     );
 
     crypto_box_seal(d.encrypted_key, key, crypto_aead_aegis256_KEYBYTES, pk);
@@ -27,9 +27,9 @@ std::string decrypt_data(const EncryptedData& ed, const unsigned char* key) {
     unsigned long long decrypted_len;
 
     int res = crypto_aead_aegis256_decrypt(decrypted.data(), &decrypted_len,
-        nullptr,
+        NULL,
         ed.encrypted.data(), ed.encrypted_len,
-        nullptr, 0,
+        NULL, 0,
         ed.nonce, key
     );
 

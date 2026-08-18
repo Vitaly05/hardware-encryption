@@ -1,11 +1,20 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QQuickStyle>
+
+#include "backend.h"
+#include "sodium.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
+
+    QQuickStyle::setStyle("Fusion");
 
     QQmlApplicationEngine engine;
+
+    qmlRegisterType<Backend>("backend", 1, 0, "Backend");
+
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
@@ -14,5 +23,9 @@ int main(int argc, char *argv[])
         Qt::QueuedConnection);
     engine.loadFromModule("hardware_encryption_program", "Main");
 
-    return QGuiApplication::exec();
+    if (sodium_init() < 0) {
+        return 1;
+    }
+
+    return QApplication::exec();
 }

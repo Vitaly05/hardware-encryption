@@ -1,44 +1,41 @@
 #include <iostream>
-#include <string>
-#include <Windows.h>
-#include <stdexcept>
-#include <vector>
-#include <array>
+#include <fstream>
+#include <iomanip>
 
-#include "shared_config.h"
-#include "hid.h"
-#include "crypto_helper.h"
-#include "encrypted_file.h"
-#include "crypto_hid_controller.h"
 #include "sodium.h"
 
 #pragma comment(lib, "libsodium.lib")
 
-const WORD VID = 0x2E8A;
-const WORD PID = 0x464A;
+bool saveKeyBinary(const std::string& filename, const unsigned char* key, int size, std::string& error_message_out) {
+    error_message_out = "";
 
-const unsigned char DEVICE_PUBLIC_KEY[] = { 0x27, 0x56, 0x30, 0x1B, 0xF0, 0x3B, 0xFA, 0x28, 0xEB, 0xD1, 0x35, 0xFF, 0x48, 0xF2, 0xC5, 0x54, 0x6C, 0x98, 0x8C, 0x4C, 0x1D, 0x61, 0xA2, 0xB4, 0x07, 0x99, 0x4A, 0x40, 0xDB, 0x97, 0x31, 0x0B };
+    std::ofstream file(filename, std::ios::out);
+
+    if (!file.is_open()) {
+        error_message_out = "Failed to open or create file: " + filename;
+        return false;
+    }
+
+    file << std::hex << std::uppercase;
+
+    for (int i = 0; i < size; ++i) {
+        file << "0x" << std::setfill('0') << std::setw(2) << static_cast<int>(key[i]);
+
+        if (i < size - 1) {
+            file << ", ";
+        }
+    }
+
+    if (!file.good()) {
+        error_message_out = "Error occurred while writing text data to file: " + filename;
+        return false;
+    }
+
+    return true;
+}
 
 int main() {
-    SetConsoleCP(65001);
-    SetConsoleOutputCP(65001);
-
     if (sodium_init() < 0) {
-        return 1;
-    }
-
-    std::string message = u8"Test from פאיכ";
-    EncryptedData ed = encrypt_data(message, DEVICE_PUBLIC_KEY);
-
-    if (save_file("test", ed) != 0) {
-        std::cout << "Error while saving file." << std::endl;
-        return 1;
-    }
-
-    EncryptedData edf;
-
-    if (read_file("test", &edf) != 0) {
-        std::cout << "Error while reading file." << std::endl;
         return 1;
     }
 
@@ -46,29 +43,20 @@ int main() {
     unsigned char sk[crypto_box_SECRETKEYBYTES];
     crypto_box_keypair(pk, sk);
 
-    try {
-        HID hid(VID, PID);
-        CryptoHidController chc(hid);
+    std::string error_msg;
 
-        chc.send_keys(edf.encrypted_key, SEALED_KEY_BYTESIZE, pk, crypto_box_PUBLICKEYBYTES);
-
-        unsigned char readed_key[SEALED_KEY_BYTESIZE];
-        chc.read_key(readed_key);
-
-        unsigned char decrypted_key[DECRYPTED_KEY_BYTESIZE];
-
-        if (crypto_box_seal_open(decrypted_key, readed_key, SEALED_KEY_BYTESIZE, pk, sk) != 0) {
-            std::cerr << "Message corrupted or not intended for this recipient." << std::endl;
-            return 1;
-        }
-
-        std::string decrypted = decrypt_data(edf, decrypted_key);
-
-        std::cout << "Decrypted: " << decrypted << std::endl;
+    if (!saveKeyBinary("public_key.lkey", pk, crypto_box_PUBLICKEYBYTES, error_msg)) {
+        std::cerr << "Error: " << error_msg << std::endl;
     }
-    catch (const std::runtime_error& err) {
-        std::cerr << err.what() << std::endl;
-        return 1;
+    else {
+        std::cout << "Key saved successfully!" << std::endl;
+    }
+
+    if (!saveKeyBinary("secret_key.lkey", sk, crypto_box_SECRETKEYBYTES, error_msg)) {
+        std::cerr << "Error: " << error_msg << std::endl;
+    }
+    else {
+        std::cout << "Key saved successfully!" << std::endl;
     }
 
     return 0;

@@ -131,17 +131,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="crypto_helper.cpp" />
-    <ClCompile Include="crypto_hid_controller.cpp" />
-    <ClCompile Include="encrypted_file.cpp" />
     <ClCompile Include="hardware-encryption-programm.cpp" />
-    <ClCompile Include="hid.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="crypto_helper.h" />
-    <ClInclude Include="crypto_hid_controller.h" />
-    <ClInclude Include="encrypted_file.h" />
-    <ClInclude Include="hid.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

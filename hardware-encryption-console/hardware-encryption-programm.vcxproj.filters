@@ -18,31 +18,5 @@
     <ClCompile Include="hardware-encryption-programm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crypto_helper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="encrypted_file.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="crypto_hid_controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="hid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crypto_helper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="encrypted_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="crypto_hid_controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

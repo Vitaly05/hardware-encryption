@@ -18,10 +18,21 @@ void CryptoHidController::send_keys(const BYTE* ek, int ek_size, const BYTE* ppk
 
 void CryptoHidController::read_key(BYTE* key_out, std::string& error_message_out) {
     std::array<BYTE, HID_DATA_BYTESIZE> pocket1 = hid.Read(error_message_out);
-	memcpy(key_out, pocket1.data(), 64);
+    memcpy(key_out, pocket1.data(), HID_DATA_BYTESIZE);
 
     std::array<BYTE, HID_DATA_BYTESIZE> pocket2 = hid.Read(error_message_out);
-	memcpy(&key_out[64], pocket2.data(), 80 - 64);
+    memcpy(&key_out[HID_DATA_BYTESIZE], pocket2.data(), SEALED_KEY_BYTESIZE - HID_DATA_BYTESIZE);
+}
+
+void CryptoHidController::get_public_key(BYTE* device_public_key_out, std::string& error_message_out) {
+    BYTE request[HID_DATA_BYTESIZE] = { 0 };
+    const POCKET_FLAG flag = FLAG_DEVICE_PUBLIC_KEY_REQUEST;
+    memcpy(request, &flag, POCKET_FLAG_BYTESIZE);
+
+    hid.Write(request, error_message_out);
+
+    std::array<BYTE, HID_DATA_BYTESIZE> answer = hid.Read(error_message_out);
+    memcpy(device_public_key_out, answer.data(), crypto_box_PUBLICKEYBYTES);
 }
 
 void CryptoHidController::collect_pockets(std::vector<Pocket>& pockets_out, const POCKET_FLAG flag, const BYTE* data, size_t data_size) {

@@ -12,8 +12,6 @@
 const WORD VID = 0x2E8A;
 const WORD PID = 0x464A;
 
-const unsigned char DEVICE_PUBLIC_KEY[] = { 0x27, 0x56, 0x30, 0x1B, 0xF0, 0x3B, 0xFA, 0x28, 0xEB, 0xD1, 0x35, 0xFF, 0x48, 0xF2, 0xC5, 0x54, 0x6C, 0x98, 0x8C, 0x4C, 0x1D, 0x61, 0xA2, 0xB4, 0x07, 0x99, 0x4A, 0x40, 0xDB, 0x97, 0x31, 0x0B };
-
 Backend::Backend(QObject *parent) : QObject(parent) {
     // m_hidItems << "HID 1" << "HID 2" << "HID 3";
     m_hid = std::make_unique<HID>(VID, PID);
@@ -66,7 +64,18 @@ Q_INVOKABLE void Backend::openFile(const QUrl &url) {
 
 void Backend::encrytpAndSaveFile() {
     std::string message = m_fileContent.toStdString();
-    EncryptedData ed = encrypt_data(message, DEVICE_PUBLIC_KEY);
+
+    std::string error_message;
+
+    BYTE device_pk[crypto_box_PUBLICKEYBYTES];
+    m_cryptoHidController->get_public_key(device_pk, error_message);
+
+    if (!error_message.empty()) {
+        emit showAlert("Error", QString::fromStdString(error_message));
+        return;
+    }
+
+    EncryptedData ed = encrypt_data(message, device_pk);
 
     if (m_currentFilePath.isEmpty()) {
         QString filePath = QFileDialog::getSaveFileName(

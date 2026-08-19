@@ -63,6 +63,14 @@ static inline void send_sealed_key(const unsigned char* sealed_key) {
 	tud_hid_report(0, second_part, HID_DATA_BYTESIZE);
 }
 
+void handle_device_pk_request() {
+	while (!tud_hid_ready()) {
+		tud_task();
+	}
+
+	tud_hid_report(0, DEVICE_PUBLIC_KEY, HID_DATA_BYTESIZE);
+}
+
 
 static inline void handle_received_data() {
 	if (!g_data_received) {
@@ -80,6 +88,8 @@ static inline void handle_received_data() {
 	}
 	else if (flag == FLAG_PROGRAM_PUBLIC_KEY) {
 		handle_program_primary_key(data);
+	} else if (flag == FLAG_DEVICE_PUBLIC_KEY_REQUEST) {
+		handle_device_pk_request();
 	}
 
 	if (g_is_all_keys_received) {

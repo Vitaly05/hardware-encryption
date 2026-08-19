@@ -26,4 +26,5 @@ public:
 	CryptoHidController(HID& hid);
     void send_keys(const BYTE* encrypted_key, int encrypted_key_size, const BYTE* program_public_key, int program_public_key_size, std::string& error_message_out);
     void read_key(BYTE* key_out, std::string& error_message_out);
+    void get_public_key(BYTE* device_public_key_out, std::string& error_message_out);
 };

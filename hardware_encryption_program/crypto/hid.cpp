@@ -8,19 +8,23 @@ extern "C" {
 #include <vector>
 #include <stdexcept>
 #include <iostream>
+#include <codecvt>
+#include <locale>
 
 #include "crypto_helper.h"
 
 #pragma comment(lib, "hid.lib")
 #pragma comment(lib, "setupapi.lib")
 
-HANDLE HID::openDevice() {
+void HID::openDevices() {
+    HidDeviceRegistry registry;
+
     GUID hidGuid;
     HidD_GetHidGuid(&hidGuid);
 
     HDEVINFO deviceInfoSet = SetupDiGetClassDevsW(&hidGuid, NULL, NULL, DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
     if (deviceInfoSet == INVALID_HANDLE_VALUE) {
-        return INVALID_HANDLE_VALUE;
+        hid_device_registry = std::move(registry);
     }
 
     SP_DEVICE_INTERFACE_DATA deviceInterfaceData;
@@ -39,7 +43,6 @@ HANDLE HID::openDevice() {
         deviceInterfaceDetailData->cbSize = sizeof(SP_DEVICE_INTERFACE_DETAIL_DATA_W);
 
         if (SetupDiGetDeviceInterfaceDetailW(deviceInfoSet, &deviceInterfaceData, deviceInterfaceDetailData, detailSize, NULL, NULL)) {
-
             HANDLE hCheck = CreateFileW(
                 deviceInterfaceDetailData->DevicePath,
                 0,
@@ -56,7 +59,15 @@ HANDLE HID::openDevice() {
 
                 if (HidD_GetAttributes(hCheck, &attributes)) {
                     if (attributes.VendorID == this->vid && attributes.ProductID == this->pid) {
+                        wchar_t serialBuffer[126] = { 0 };
+                        std::wstring serialNumber = L"UNKNOWN_SERIAL_" + std::to_wstring(memberIndex); // Фолбэк, если серийника нет
+
+                        if (HidD_GetSerialNumberString(hCheck, serialBuffer, sizeof(serialBuffer))) {
+                            serialNumber = serialBuffer;
+                        }
+
                         CloseHandle(hCheck);
+                        hCheck = INVALID_HANDLE_VALUE;
 
                         hFinalDevice = CreateFileW(
                             deviceInterfaceDetailData->DevicePath,
@@ -67,30 +78,32 @@ HANDLE HID::openDevice() {
                             FILE_FLAG_OVERLAPPED,
                             NULL
                         );
-                        break;
+
+                        if (hFinalDevice != INVALID_HANDLE_VALUE) {
+                            registry.devices[serialNumber] = hFinalDevice;
+                        }
                     }
                 }
-                CloseHandle(hCheck);
+
+                if (hCheck != INVALID_HANDLE_VALUE) {
+                    CloseHandle(hCheck);
+                }
             }
         }
     }
 
     SetupDiDestroyDeviceInfoList(deviceInfoSet);
-    return hFinalDevice;
+
+    hid_device_registry = std::move(registry);
 }
 
 void HID::closeHandles() {
     CloseHandle(overlappedWrite.hEvent);
     CloseHandle(overlappedRead.hEvent);
-    CloseHandle(handle);
 }
 
 HID::HID(const WORD vid, const WORD pid) : vid(vid), pid(pid) {
-    handle = openDevice();
-
-    if (handle == INVALID_HANDLE_VALUE) {
-        throw std::runtime_error("Device not found.");
-    }
+    openDevices();
 
     overlappedWrite.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
     overlappedRead.hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
@@ -100,18 +113,37 @@ HID::~HID() {
     closeHandles();
 }
 
-bool g_is_encrypted_key_started = false;
-int g_sended_key_iteration = 0;
+void HID::Write(const BYTE* data, std::wstring device_serial, std::string& error_message_out) {
+    auto it = hid_device_registry.devices.find(device_serial);
 
-void HID::Write(const BYTE* data, std::string& error_message_out) {
+    if (it == hid_device_registry.devices.end()) {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>>converter;
+        std::string device_serial_utf8 = converter.to_bytes(device_serial);
+        error_message_out = "Device with serial number '" + device_serial_utf8 + "' was not found";
+
+        return;
+    }
+
+    HANDLE handle = it->second;
     BYTE buff[HID_DATA_BYTESIZE + 1] = { 0 };
     memcpy(&buff[1], data, HID_DATA_BYTESIZE);
 
     DWORD bytesWritten = 0;
 
     if (!WriteFile(handle, buff, sizeof(buff), &bytesWritten, &overlappedWrite)) {
-        if (GetLastError() != ERROR_IO_PENDING) {
-            error_message_out = "Error while sending data to device";
+        DWORD err = GetLastError();
+
+        if (err != ERROR_IO_PENDING) {
+            if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_GEN_FAILURE) {
+                error_message_out = "Device was disconnected";
+                CloseHandle(handle);
+                hid_device_registry.devices.erase(it);
+
+                return;
+            }
+
+            error_message_out = "Error while sending data to device. Code: " + std::to_string(err);
+
             return;
         }
     }
@@ -121,31 +153,77 @@ void HID::Write(const BYTE* data, std::string& error_message_out) {
     std::cout << "Sended to device" << std::endl;
 }
 
-std::array<BYTE, HID_DATA_BYTESIZE> HID::Read(std::string& error_message_out) {
+std::array<BYTE, HID_DATA_BYTESIZE> HID::Read(std::wstring device_serial, std::string& error_message_out) {
     error_message_out = "";
     std::array<BYTE, HID_DATA_BYTESIZE> data;
 
+    auto it = hid_device_registry.devices.find(device_serial);
+
+    if (it == hid_device_registry.devices.end()) {
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        std::string device_serial_utf8 = converter.to_bytes(device_serial);
+        error_message_out = "Device with serial number '" + device_serial_utf8 + "' was not found";
+
+        return data;
+    }
+
+    HANDLE handle = it->second;
     BYTE buff[HID_DATA_BYTESIZE + 1] = { 0 };
     DWORD bytesRead = 0;
 
     std::cout << "Start reading..." << std::endl;
 
     if (!ReadFile(handle, buff, sizeof(buff), &bytesRead, &overlappedRead)) {
-        if (GetLastError() != ERROR_IO_PENDING) {
-            error_message_out = "Error while reading data from device";
+        DWORD err = GetLastError();
+
+        if (err != ERROR_IO_PENDING) {
+            if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_GEN_FAILURE) {
+                error_message_out = "Device was disconnected";
+                CloseHandle(handle);
+                hid_device_registry.devices.erase(it);
+
+                return data;
+            }
+
+            error_message_out = "Error while reading data from device. Code: " + std::to_string(err);
+
             return data;
         }
     }
 
-    DWORD waitResult = WaitForSingleObject(overlappedRead.hEvent, INFINITE);
+    DWORD waitResult = WaitForSingleObject(overlappedRead.hEvent, 5000);
     if (waitResult == WAIT_TIMEOUT) {
-        error_message_out = "No answer from device";
+        CancelIoEx(handle, &overlappedRead);
+        error_message_out = "No answer from device (Timeout)";
+
         return data;
     }
 
-    GetOverlappedResult(handle, &overlappedRead, &bytesRead, TRUE);
+    if (!GetOverlappedResult(handle, &overlappedRead, &bytesRead, FALSE)) {
+        DWORD err = GetLastError();
+
+        if (err == ERROR_DEVICE_NOT_CONNECTED || err == ERROR_GEN_FAILURE || err == ERROR_OPERATION_ABORTED) {
+            error_message_out = "Device was disconnected during reading";
+            CloseHandle(handle);
+            hid_device_registry.devices.erase(it);
+
+            return data;
+        }
+
+        error_message_out = "Asynchronous read failed. Code: " + std::to_string(err);
+
+        return data;
+    }
 
     memcpy(data.data(), &buff[1], HID_DATA_BYTESIZE);
 
     return data;
+}
+
+std::vector<std::wstring> HID::GetDeviceSerials() {
+    return hid_device_registry.getAvailableSerials();
+}
+
+void HID::RefreshDevices() {
+    openDevices();
 }

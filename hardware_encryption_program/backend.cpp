@@ -13,9 +13,38 @@ const WORD VID = 0x2E8A;
 const WORD PID = 0x464A;
 
 Backend::Backend(QObject *parent) : QObject(parent) {
-    // m_hidItems << "HID 1" << "HID 2" << "HID 3";
     m_hid = std::make_unique<HID>(VID, PID);
     m_cryptoHidController = std::make_unique<CryptoHidController>(*m_hid);
+    getAvailableSerials();
+}
+
+void Backend::getAvailableSerials() {
+    std::vector<std::wstring> serials = m_hid->GetDeviceSerials();
+
+    m_hidSerials.clear();
+    setSelectedHidSerial("");
+    m_hidSerials.reserve(static_cast<int>(serials.size()));
+
+    for (const std::wstring& serial : serials) {
+        m_hidSerials.push_back(QString::fromStdWString(serial));
+    }
+
+    emit hidSerialsChanged();
+}
+
+QStringList Backend::hidSerials() const {
+    return m_hidSerials;
+}
+
+QString Backend::selectedHidSerial() const {
+    return m_selectedHidSerial;
+}
+
+void Backend::setSelectedHidSerial(const QString &serial) {
+    m_selectedHidSerial = serial;
+    m_cryptoHidController->set_serial(serial.toStdString());
+
+    emit selectedHidSerialChanged();
 }
 
 QString Backend::currentFilePath() const {
@@ -145,4 +174,9 @@ void Backend::decryptFile() {
     }
 
     setFileContent(QString::fromStdString(decrypted));
+}
+
+Q_INVOKABLE void Backend::refreshDevices() {
+    m_hid->RefreshDevices();
+    getAvailableSerials();
 }

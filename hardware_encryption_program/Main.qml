@@ -15,8 +15,6 @@ ApplicationWindow {
 
     title: qsTr("Hardware encryption")
 
-    property string selectedDevice: ""
-
     Backend {
         id: backend
     }
@@ -66,10 +64,45 @@ ApplicationWindow {
         anchors.margins: 10
         spacing: 15
 
-        GroupBox {
-            title: "Select device"
-            Layout.fillHeight: true
-            Layout.preferredWidth: 250
+        ColumnLayout {
+            GroupBox {
+                title: "Select device"
+                Layout.fillHeight: true
+                Layout.preferredWidth: 250
+
+                Label {
+                    text: "Devices not found"
+                    font.pointSize: 11
+                    anchors.centerIn: parent
+
+                    visible: backend.hidSerials.length === 0
+                }
+
+                ListView {
+                    anchors.fill: parent
+                    model: backend.hidSerials
+                    clip: true
+
+                    Component.onCompleted: currentIndex = -1
+
+                    delegate: ItemDelegate {
+                        width: parent.width
+                        text: modelData
+                        highlighted: ListView.isCurrentItem
+
+                        onClicked: {
+                            ListView.view.currentIndex = index;
+                            backend.selectedHidSerial = modelData;
+                        }
+                    }
+                }
+            }
+
+            Button {
+                text: "Refresh devices"
+
+                onClicked: backend.refreshDevices()
+            }
         }
 
         ColumnLayout {
@@ -99,30 +132,13 @@ ApplicationWindow {
                 }
             }
 
-            RowLayout {
-                Layout.fillWidth: true
-                spacing: 10
+            Button {
+                text: "Encrypt"
+                anchors.right: parent.right
+                enabled: backend.selectedHidSerial !== ""
 
-                Button {
-                    text: "Encrypt"
-                    Layout.fillWidth: true
-
-                    // enabled: window.selectedDevice !== ""
-
-                    onClicked: {
-                        backend.encrytpAndSaveFile()
-                    }
-                }
-
-                Button {
-                    text: "Decrypt"
-                    Layout.fillWidth: true
-
-                    // enabled: window.selectedDevice !== ""
-
-                    onClicked: {
-
-                    }
+                onClicked: {
+                    backend.encrytpAndSaveFile()
                 }
             }
         }

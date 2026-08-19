@@ -5,19 +5,21 @@ extern "C" {
 }
 #include <string>
 #include <array>
+#include <vector>
 
 #include "shared_config.h"
 #include "sodium.h"
 #include "crypto_helper.h"
+#include "hid_device_registry.h"
 
 class HID {
 private:
 	WORD vid; WORD pid;
-	HANDLE handle;
+    HidDeviceRegistry hid_device_registry;
 	OVERLAPPED overlappedWrite = { 0 };
 	OVERLAPPED overlappedRead = { 0 };
 
-	HANDLE openDevice();
+    void openDevices();
 	void closeHandles();
 
 public:
@@ -26,6 +28,8 @@ public:
 	HID(const WORD vid, const WORD pid);
 	~HID();
 
-    void Write(const BYTE* data, std::string& error_message_out);
-    std::array<BYTE, HID_DATA_BYTESIZE> Read(std::string& error_message_out);
+    void Write(const BYTE* data, std::wstring device_serial, std::string& error_message_out);
+    std::array<BYTE, HID_DATA_BYTESIZE> Read(std::wstring device_serial, std::string& error_message_out);
+    std::vector<std::wstring> GetDeviceSerials();
+    void RefreshDevices();
 };
